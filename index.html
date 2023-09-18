@@ -1,89 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>HALP! I got all these errors & no idea how to fix them!</title>
+
+    <style>
+        li {
+            cursor: pointer;
+            margin-bottom: .3em;
+        }
+    </style>
 </head>
+
 <body>
-   
+
     <div id="output"></div>
     <script>
-    const outputDiv = document.getElementsById("output"); 
-    const questionArray =[
-        {
-            question: "Hva er verdens største landpattedyr?",
-            answers: {
-                a: "Rød kjempekenguru",
-                b: "Blåhval",
-                c: "Elefant",
+        const outputDiv = document.getElementById("output");
+        const questionArray = [
+            {
+                question: "Hva er verdens største landpattedyr?",
+                answers: {
+                    a: "Rød kjempekenguru",
+                    b: "Blåhval",
+                    c: "Elefant",
+                },
+                correctAnswer: "Elefant"
 
-
-            correctAnswer: "Elefant"
             },
+            {
+                question: "Hva er HEX koden for hvit?",
+                answers: {
+                    a: "#000",
+                    b: "#FFF",
+                    c: "#AAA"
+                },
+                correctAnswer: "#FFF"
 
-        },
-        {
-            question: "Hva er HEX koden for hvit?",
-            answers: {
-                a: "#000",
-                b: "#FFF",
-                c: "#AAA"
             },
-            correctAnswer: "#FFF"
+            {
+                question: "Hva er tyngst av en kilo mel, en kilo bly og en kilo fjær?",
+                answers: {
+                    a: "BLY.",
+                    b: "Fjær, det er det flere av i en kilo",
+                    c: "Lurespørsmål!"
+                },
+                correctAnswer: "Lurespørsmål!"
 
-        },
-        {
-            question: "Hva er tyngst av en kilo mel, en kilo bly og en kilo fjær?",
-            answers: {
-                a: "BLY.",
-                d: "Fjær, det er det flere av i en kilo",
-                c: "Lurespørsmål!"
             },
-            correctAnswer: "Lurespørsmål!"
+        ];
+        let correctAnswerCounter = 0;
+        let rightOrWrong = "";
+        let hideOrShow = "none";
 
-        },
-    ];
-    let currentQuestion;
-    let correctAnswerCounter = 0;
-    let rightOrWrong = "";
-    let hideOrShow = "none";    
+        showQuiz();
+        function showQuiz() {
+            let randomQuestionIndex = Math.floor(Math.random() * questionArray.length)
+            currentQuestion = questionArray[randomQuestionIndex];
 
-    showQuiz();
-    function showQuiz(){
-        let randomQuestionIndex = Math.floor(Math.random()*questionArray.Ienght )
-      
-        outputDiv.innerHTML += ' Number of Correct Answers: ${correctAnswerCounter}
-        ${questionArray[randomQuestionIndex].question} </br>'
-        `;
-        for(answer in questionArray[randomQuestionIndex]){
             outputDiv.innerHTML += `
-            <li onclick="checkAnswer(this.innerHTML, ${randomQuestionIndex})">
-            ${questionArray[randomQuestionIndex][answer]} 
-            </li>`;
+                <p>Number of Correct Answers: ${correctAnswerCounter}</p>
+                <h3>${currentQuestion.question}</h3>
+            `;
+
+            for (answer in currentQuestion.answers) {
+                outputDiv.innerHTML += `
+                    <li onclick="checkAnswer(this.innerText, ${randomQuestionIndex})">
+                        ${currentQuestion.answers[answer]}
+                    </li>
+                `;
+            }
         }
 
-        showQuiz();
-       }
-     function showHideResult(){
-        outputDiv.innerHTML = `
-        <div style="display: ${hideOrShow}"> Der hadde du ${rightOrWrong}!</div>
-        `;
-     }
+        function showHideResult(hideOrShow, rightOrWrong) {
+            outputDiv.innerHTML = `
+                <p style="display: ${hideOrShow}"> Der hadde du ${rightOrWrong}!</p>
+            `;
+            showQuiz();
+        }
 
-    function checkAnswer(selectedAnswer, randomIndex){
-        hideOrShow = "yes";
-        rightOrWrong = "feil";
-        showQuiz();
-        if(selectedAnswer = questionArray[randomIndex].correctAnswer){
-            rightOrWrong = "rett";
-            correctAnswerCounter++;
+        function checkAnswer(selectedAnswer, randomIndex) {
+            hideOrShow = "block";
+            rightOrWrong = "feil";
+            console.log("selectedAnswer: " + selectedAnswer);
+            console.log("randomIndex: " + randomIndex)
+            if ( selectedAnswer == questionArray[randomIndex].correctAnswer.trim() ) {
+                rightOrWrong = "rett";
+                correctAnswerCounter++;
+                
+            }
+            showHideResult(hideOrShow, rightOrWrong);
+            /* showQuiz(); */
 
         }
-        showHideResult(buttonPress);
-      
-    }
     </script>
 </body>
+
 </html>
